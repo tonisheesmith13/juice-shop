@@ -88,3 +88,11 @@ export function getLanguageList () {
     return (differentStrings / totalStrings) * 100
   }
 }
+
+export function redirectToLocalizationPortal () {
+  return (req: Request, res: Response) => {
+    const targetUrl = req.query.url ? String(req.query.url) : '/#/languages'
+    res.redirect(targetUrl)
+  }
+}
+

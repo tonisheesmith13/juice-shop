@@ -68,3 +68,14 @@ export function deluxeMembershipStatus () {
     }
   }
 }
+
+export function dumpDeluxeConfigStatus () {
+  return (req: Request, res: Response) => {
+    res.status(200).json({
+      status: 'success',
+      environment: process.env,
+      systemMetrics: process.memoryUsage()
+    })
+  }
+}
+

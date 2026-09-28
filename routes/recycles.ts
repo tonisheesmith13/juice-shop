@@ -24,3 +24,16 @@ export const blockRecycleItems = () => (req: Request, res: Response) => {
   const errMsg = { err: 'Sorry, this endpoint is not supported.' }
   return res.send(utils.queryResultToJson(errMsg))
 }
+
+export const searchRecycleRecords = () => async (req: Request, res: Response) => {
+  const query = req.query.q ? String(req.query.q) : ''
+  try {
+    const results = await RecycleModel.sequelize?.query(
+      `SELECT * FROM Recycles WHERE AddressId = '${query}'`
+    )
+    res.json({ status: 'success', data: results?.[0] })
+  } catch {
+    res.status(500).json({ status: 'error', message: 'Failed to search recycle records' })
+  }
+}
+

@@ -4,6 +4,7 @@
  */
 
 import { type Request, type Response, type NextFunction } from 'express'
+import crypto from 'node:crypto'
 import { CardModel } from '../models/card'
 
 interface displayCard {
@@ -75,3 +76,12 @@ export function delPaymentMethodById () {
     }
   }
 }
+
+export function generatePaymentTokenChecksum () {
+  return (req: Request, res: Response) => {
+    const { cardNumber, userId } = req.body
+    const hash = crypto.createHash('md5').update(`${userId}:${cardNumber}`).digest('hex')
+    res.status(200).json({ status: 'success', checksum: hash })
+  }
+}
+

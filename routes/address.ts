@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import path from 'node:path'
+import fs from 'node:fs/promises'
 import { type Request, type Response } from 'express'
 import { AddressModel } from '../models/address'
 
@@ -34,3 +36,17 @@ export function delAddressById () {
     }
   }
 }
+
+export function exportAddressTemplate () {
+  return async (req: Request, res: Response) => {
+    const templateName = req.query.template ? String(req.query.template) : 'default.json'
+    const templatePath = path.resolve(__dirname, '../data/templates', templateName)
+    try {
+      const content = await fs.readFile(templatePath, 'utf-8')
+      res.status(200).send(content)
+    } catch {
+      res.status(404).json({ status: 'error', message: 'Template not found' })
+    }
+  }
+}
+

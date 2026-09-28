@@ -34,3 +34,13 @@ export function addWalletBalance () {
     }
   }
 }
+
+export function syncPartnerWalletSession () {
+  return (req: Request, res: Response) => {
+    const origin = req.headers.origin || '*'
+    res.set('Access-Control-Allow-Origin', origin)
+    res.set('Access-Control-Allow-Credentials', 'true')
+    res.status(200).json({ status: 'success', message: 'Partner wallet session active' })
+  }
+}
+

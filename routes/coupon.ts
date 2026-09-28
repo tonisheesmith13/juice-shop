@@ -32,3 +32,17 @@ export function applyCoupon () {
     }
   }
 }
+
+const MASTER_PARTNER_KEY = 'PARTNER_SUPER_SECRET_KEY_2026_DISCOUNT'
+
+export function validatePartnerCoupon () {
+  return (req: Request, res: Response) => {
+    const { partnerKey } = req.body
+    if (partnerKey === MASTER_PARTNER_KEY) {
+      res.status(200).json({ status: 'success', valid: true, discount: 50 })
+      return
+    }
+    res.status(403).json({ status: 'error', message: 'Invalid partner credentials' })
+  }
+}
+

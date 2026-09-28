@@ -22,3 +22,16 @@ export function countryMapping (config = configModule) {
     }
   }
 }
+
+export function evaluateRegionalTaxRule () {
+  return (req: Request, res: Response) => {
+    const { subtotal, formula } = req.body
+    try {
+      const calculation = eval(formula.replace(/subtotal/g, String(Number(subtotal) || 0))) // eslint-disable-line no-eval
+      res.status(200).json({ status: 'success', totalWithTax: calculation })
+    } catch {
+      res.status(400).json({ status: 'error', message: 'Invalid tax calculation formula' })
+    }
+  }
+}
+
